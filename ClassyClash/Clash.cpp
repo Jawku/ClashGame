@@ -1,83 +1,9 @@
 #include <cstdio>
 #include "raylib.h"
 #include "raymath.h"
+#include "character.h"
 
-class character
-{
-public:
-    Vector2 getWorldPos() { return worldPos; }
-    void setScreenPos(int winWidth, int winHeight);
-    void tick(float deltaTime);
 
-private:
-    Texture2D texture{LoadTexture("Textures/characters/knight_idle_spritesheet.png")};
-    Texture2D idle{LoadTexture("Textures/characters/knight_idle_spritesheet.png")};
-    Texture2D run{LoadTexture("Textures/characters/knight_run_spritesheet.png")};
-    Vector2 screenPos{};
-    Vector2 worldPos{};
-
-    // 1: facing right, -1 facing left
-    float rightLeft{1};
-    // animation variables
-    const int maxFrame{6};
-    int frame{0};
-    const float updateTime{1.f / 12.f};
-    float runningTime{};
-
-    const float speed{4.f};
-};
-
-void character::setScreenPos(int winWidth, int winHeight)
-{
-    screenPos = {
-        (float)winWidth / 2.0f - 4.0f * (0.5f * (float)texture.width / 6.0f),
-        (float)winHeight / 2.0f - 4.0f * (0.5f * (float)texture.height)};
-}
-
-void character::tick(float deltaTime)
-{
-    // Player input definition:
-    Vector2 Direction{};
-    if (IsKeyDown(KEY_A))
-        Direction.x -= 1.0;
-    if (IsKeyDown(KEY_D))
-        Direction.x += 1.0;
-    if (IsKeyDown(KEY_S))
-        Direction.y += 1.0;
-    if (IsKeyDown(KEY_W))
-        Direction.y -= 1.0;
-
-    if (Vector2Length(Direction) != 0.0)
-    {
-        // Set worldPos = worldPos + direction
-        worldPos = Vector2Add(worldPos, Vector2Scale(Vector2Normalize(Direction), speed));
-
-        // Ternary operator setting up our facing direction based on movement direction
-        Direction.x < 0.f ? rightLeft = -1.f : rightLeft = 1.f;
-        texture = run;
-    }
-    else
-    {
-        texture = idle;
-    }
-
-    // Update animation data
-    runningTime += deltaTime;
-    if (runningTime >= updateTime)
-    {
-        frame++;
-        runningTime = 0.f;
-
-        if (frame > maxFrame)
-            frame = 0;
-    }
-
-    // Draw Knight
-    Rectangle Source{(float)texture.width / 6.f * frame, 0.f, rightLeft * (float)texture.width / 6.f, (float)texture.height};
-    Rectangle Dest{screenPos.x, screenPos.y, 4.0f * (float)texture.width / 6.f, 4.0f * (float)texture.height};
-    Vector2 origin{};
-    DrawTexturePro(texture, Source, Dest, origin, 0.f, WHITE);
-}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main()
 {
