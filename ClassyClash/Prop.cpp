@@ -17,12 +17,12 @@ void Prop::Render(Vector2 knightPos)
 
 Rectangle Prop :: get_collision_rec(Vector2 knightPos)
 {
-    Vector2 screenPos = Vector2Subtract(world_pos, knightPos);
+    Vector2 screenPos {Vector2Subtract(world_pos, knightPos)};
     return Rectangle{
                     screenPos.x,
                     screenPos.y,
-                    texture.width*scale,
-                    texture.height*scale
+                    texture.width * scale,
+                    texture.height * scale
     };
                     
 }

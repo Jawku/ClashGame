@@ -15,7 +15,8 @@ character :: character(int winWidth, int winHeight)
 
 void character::tick(float deltaTime)
 {
-    worldPosLastFrame = worldPos;
+    BaseCharacter :: tick(deltaTime);
+    
     // Player input definition:
     Vector2 Direction{};
     if (IsKeyDown(KEY_A))
@@ -41,35 +42,9 @@ void character::tick(float deltaTime)
         texture = idle;
     }
 
-    // Update animation data
-    runningTime += deltaTime;
-    if (runningTime >= updateTime)
-    {
-        frame++;
-        runningTime = 0.f;
+    
 
-        if (frame > maxFrame)
-            frame = 0;
-    }
-
-    // Draw Knight
-    Rectangle Source{width* frame, 0.f, rightLeft * width, height};
-    Rectangle Dest{screenPos.x, screenPos.y, scale * width, scale * height};
-    Vector2 origin{};
-    DrawTexturePro(texture, Source, Dest, origin, 0.f, WHITE);
+    
 }
 
-void character :: undoMovement()
-{
-    worldPos = worldPosLastFrame;
-}
 
-Rectangle character :: get_collision_rec()
-{
-    return Rectangle{
-                screenPos.x,
-                screenPos.y,
-                texture.width*scale,
-                texture.height*scale
-    };
-}

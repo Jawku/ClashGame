@@ -3,12 +3,13 @@
 #include "raymath.h"
 #include "character.h"
 #include "Prop.h"
+#include "Enemy.h"
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main()
 {
-    const int WindowDimension[2]{400, 400};
+    const int WindowDimension[2]{500, 500};
 
     InitWindow(WindowDimension[0], WindowDimension[1], "Clash Of Titi");
 
@@ -29,9 +30,18 @@ int main()
         Prop{Vector2 {600.f,700.f},LoadTexture("Textures/nature_tileset/Rock.png")}
     };
 
+    // Initialization of Enemys
+
+    Enemy Goblin{
+        Vector2{}, 
+        LoadTexture("Textures/characters/goblin_idle_spritesheet.png"),
+        LoadTexture("Textures/characters/goblin_run_spritesheet.png")
+        };
+    
+    Goblin.SetTarget(&knight);
     
     SetTargetFPS(90);
-    while (!WindowShouldClose())s
+    while (!WindowShouldClose())
     {
         BeginDrawing();
         ClearBackground(WHITE);
@@ -53,6 +63,8 @@ int main()
         // Doing evrything that has to be done each frame in our character class with usage of tick function
         knight.tick(GetFrameTime());
 
+       
+
         // Check if character is not outside of map pos bound - stays on playable area
         if (knight.getWorldPos().x < 0.f ||
             knight.getWorldPos().y < 0.f ||
@@ -65,6 +77,9 @@ int main()
         // Check props collisions
         for (auto prop : props)
         {
+            //Debug of colsion rectangles for props
+            //DrawRectangle(prop.get_collision_rec(knight.getWorldPos()).x,prop.get_collision_rec(knight.getWorldPos()).y,prop.get_collision_rec(knight.getWorldPos()).width,prop.get_collision_rec(knight.getWorldPos()).height,RED);
+            //DrawRectangle(knight.get_collision_rec().x,knight.get_collision_rec().y,knight.get_collision_rec().width,knight.get_collision_rec().height,RED);
             if (CheckCollisionRecs(knight.get_collision_rec(),prop.get_collision_rec(knight.getWorldPos())))
             {
                 knight.undoMovement();
@@ -73,6 +88,8 @@ int main()
         }
         
         
+         //Goblin drawing:
+        Goblin.tick(GetFrameTime());
 
 
         EndDrawing();
