@@ -9,7 +9,9 @@ class BaseCharacter
         Vector2 getWorldPos() { return worldPos; }
         void undoMovement();
         Rectangle get_collision_rec();
-        virtual void tick(float deltaTime);   
+        virtual void tick(float deltaTime);
+        virtual Vector2 GetScreenPos() = 0; // Pure virtual function ( = 0 makes it that) -> 
+        //Because of this Base characeter becomes "Abstract Class" - > WE CANT CREATE INSTANCE OF IT ONLY WE CAN CREATE INSTANCES OF CHILD CLASSES !!!!!
     
     protected:
         Texture2D texture{LoadTexture("Textures/characters/knight_idle_spritesheet.png")};
@@ -33,6 +35,7 @@ class BaseCharacter
         float height{};
 
         float scale{4.0f};
+        Vector2 Velocity{};
 
     private:
 

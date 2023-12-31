@@ -33,7 +33,7 @@ int main()
     // Initialization of Enemys
 
     Enemy Goblin{
-        Vector2{}, 
+        Vector2{300,350}, 
         LoadTexture("Textures/characters/goblin_idle_spritesheet.png"),
         LoadTexture("Textures/characters/goblin_run_spritesheet.png")
         };
