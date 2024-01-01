@@ -10,7 +10,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main()
 {
-    const int WindowDimension[2]{500, 500};
+    const int WindowDimension[2]{400, 400};
 
     InitWindow(WindowDimension[0], WindowDimension[1], "Clash Of Titi");
 
@@ -27,19 +27,40 @@ int main()
 
     Prop props[3]{
         Prop{Vector2 {200.f,300.f},LoadTexture("Textures/nature_tileset/Rock.png")},
-        Prop{Vector2 {400.f,500.f},LoadTexture("Textures/nature_tileset/log.png")},
+        Prop{Vector2 {600.f,600.f},LoadTexture("Textures/nature_tileset/log.png")},
         Prop{Vector2 {600.f,700.f},LoadTexture("Textures/nature_tileset/Rock.png")}
     };
 
     // Initialization of Enemys
 
-    Enemy Goblin{
+    Enemy Goblin1{
         Vector2{300,350}, 
         LoadTexture("Textures/characters/goblin_idle_spritesheet.png"),
         LoadTexture("Textures/characters/goblin_run_spritesheet.png")
         };
+
+    Enemy Goblin2{
+        Vector2{500,650}, 
+        LoadTexture("Textures/characters/goblin_idle_spritesheet.png"),
+        LoadTexture("Textures/characters/goblin_run_spritesheet.png")
+        };
+
+    Enemy Slime{Vector2{100,200}, 
+                LoadTexture("Textures/characters/slime_idle_spritesheet.png"),
+                LoadTexture("Textures/characters/slime_run_spritesheet.png")
+
+    };
+
+
+    // Setting target for our monsters to be our character:
+    Enemy* enemies[]{&Goblin1,&Goblin2,&Slime};
+    for (auto gobs : enemies)
+    {
+        gobs->SetTarget(&knight);
+    }
     
-    Goblin.SetTarget(&knight);
+
+                                                                    // Main game loop
     
     SetTargetFPS(90);
     while (!WindowShouldClose())
@@ -62,7 +83,6 @@ int main()
         }
         
         // Drawing healt and game over:
-        
         if (!knight.GetAlive()) // character is dead
         {
            DrawText("Game Over!", 50,50,40,RED);
@@ -88,7 +108,7 @@ int main()
             knight.getWorldPos().x + WindowDimension[0] > Map.width * mapScale  ||
             knight.getWorldPos().y + WindowDimension[1] > Map.height * mapScale)
         {
-            knight.undoMovement();   d
+            knight.undoMovement();
         }
         
         // Check props collisions
@@ -106,17 +126,24 @@ int main()
         
         
          //Goblin drawing:
-        Goblin.tick(GetFrameTime());
-
+       for (auto gobs : enemies)
+       {
+         gobs->tick(GetFrameTime());
+       }
+       
 
         // Killing goblin when our sword hits is but only when mouse button clicked.
         
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         {
-            if (CheckCollisionRecs(knight.GetWeaponCollisionRec(),Goblin.get_collision_rec()))
+            for (auto gobs : enemies)
             {
-                Goblin.SetAlive(false);
+                    if (CheckCollisionRecs(knight.GetWeaponCollisionRec(),gobs->get_collision_rec()))
+                {
+                   gobs->SetAlive(false);
+                }
             }
+                     
             
         }
 

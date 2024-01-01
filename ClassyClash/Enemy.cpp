@@ -29,6 +29,11 @@ void Enemy::tick(float deltaTime)
    if (!GetAlive()) return;  
   
     Velocity = Vector2Subtract(target->GetScreenPos(), GetScreenPos());
+   
+   if (Vector2Length(Velocity) < Radius) Velocity = {};
+   if(Vector2Length(Velocity) > Aggro) Velocity = {};
+  
+   
 
     // set world pos for enemy erach freame -> worldPos += toTarget
     

@@ -13,6 +13,7 @@ windowHeight(winHeight)
     
 }
 
+// Where we spawn our character
 Vector2 character::GetScreenPos()
 {
     return Vector2{
@@ -81,12 +82,12 @@ void character::tick(float deltaTime)
                     
     DrawTexturePro(Weapon,source,Dest,origin,Rotation,WHITE);
 
-    DrawRectangleLines(WeaponCollisionRec.x,
+   /* DrawRectangleLines(WeaponCollisionRec.x,
                         WeaponCollisionRec.y,
                         WeaponCollisionRec.width,
                         WeaponCollisionRec.height,
                         RED);
-
+    */
 
 
 }

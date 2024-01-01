@@ -18,5 +18,7 @@ private:
 
     character* target;
     float damagePerSec{10.f};
+    float Radius{25.f};
+    float Aggro{200.f};
 
 };
