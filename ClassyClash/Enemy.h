@@ -12,10 +12,11 @@ public:
     virtual void tick(float deltaTime) override;
     void SetTarget(character* character) {target = character;};
     virtual Vector2 GetScreenPos() override;
+    
    
 private: 
 
     character* target;
-      
+    float damagePerSec{10.f};
 
 };

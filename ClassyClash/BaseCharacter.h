@@ -12,7 +12,9 @@ class BaseCharacter
         virtual void tick(float deltaTime);
         virtual Vector2 GetScreenPos() = 0; // Pure virtual function ( = 0 makes it that) -> 
         //Because of this Base characeter becomes "Abstract Class" - > WE CANT CREATE INSTANCE OF IT ONLY WE CAN CREATE INSTANCES OF CHILD CLASSES !!!!!
-    
+        bool GetAlive() {return Alive;}
+        void SetAlive(bool isAlive) {Alive = isAlive; }
+        
     protected:
         Texture2D texture{LoadTexture("Textures/characters/knight_idle_spritesheet.png")};
         Texture2D idle{LoadTexture("Textures/characters/knight_idle_spritesheet.png")};
@@ -36,9 +38,11 @@ class BaseCharacter
 
         float scale{4.0f};
         Vector2 Velocity{};
+        
 
     private:
 
+    bool Alive{true};
     
     
 

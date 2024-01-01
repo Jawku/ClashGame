@@ -25,6 +25,8 @@ Vector2 character::GetScreenPos()
 void character::tick(float deltaTime)
 {
     
+    if (!GetAlive()) return;  
+
     
     // Player input definition:    
     if (IsKeyDown(KEY_A))
@@ -53,7 +55,9 @@ void character::tick(float deltaTime)
                             Weapon.height * scale
                             };
 
-        Rotation = 35.f;
+        
+       Rotation = IsMouseButtonDown(MOUSE_BUTTON_LEFT) ? 35.f : 0.f;
+
     }
     else
     {
@@ -64,7 +68,7 @@ void character::tick(float deltaTime)
                             Weapon.width * scale,
                             Weapon.height * scale
                             };
-        Rotation = -35.f;
+        Rotation = IsMouseButtonDown(MOUSE_BUTTON_LEFT) ? -35.f : 0.f;
     }
 
     //Draw sword
@@ -82,8 +86,18 @@ void character::tick(float deltaTime)
                         WeaponCollisionRec.width,
                         WeaponCollisionRec.height,
                         RED);
-      
+
+
+
 }
 
 
-
+void character :: TakeDamage(float damage)
+{
+    health -= damage;
+    if (health <= 0.f)
+    {
+        SetAlive(false);
+    }
+    
+}

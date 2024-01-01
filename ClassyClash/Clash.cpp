@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <string>
 #include "raylib.h"
 #include "raymath.h"
 #include "character.h"
@@ -60,6 +61,22 @@ int main()
             prop.Render(knight.getWorldPos());
         }
         
+        // Drawing healt and game over:
+        
+        if (!knight.GetAlive()) // character is dead
+        {
+           DrawText("Game Over!", 50,50,40,RED);
+           EndDrawing();
+           continue;
+        }
+        else // chracter is alaive
+        {
+            std::string knightsHealth = "Health: ";
+            knightsHealth.append(std::to_string(knight.GetCharacterHealth()),0,4);
+            DrawText(knightsHealth.c_str(),30,30,20,RED);
+
+        }
+
         // Doing evrything that has to be done each frame in our character class with usage of tick function
         knight.tick(GetFrameTime());
 
@@ -71,7 +88,7 @@ int main()
             knight.getWorldPos().x + WindowDimension[0] > Map.width * mapScale  ||
             knight.getWorldPos().y + WindowDimension[1] > Map.height * mapScale)
         {
-            knight.undoMovement();   
+            knight.undoMovement();   d
         }
         
         // Check props collisions
@@ -90,6 +107,18 @@ int main()
         
          //Goblin drawing:
         Goblin.tick(GetFrameTime());
+
+
+        // Killing goblin when our sword hits is but only when mouse button clicked.
+        
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        {
+            if (CheckCollisionRecs(knight.GetWeaponCollisionRec(),Goblin.get_collision_rec()))
+            {
+                Goblin.SetAlive(false);
+            }
+            
+        }
 
 
         EndDrawing();

@@ -23,15 +23,21 @@ Vector2 Enemy :: GetScreenPos()
     return Vector2 { Vector2Subtract(worldPos, target->getWorldPos()) };
 }
 
+
 void Enemy::tick(float deltaTime)
 {
-   
+   if (!GetAlive()) return;  
   
     Velocity = Vector2Subtract(target->GetScreenPos(), GetScreenPos());
 
     // set world pos for enemy erach freame -> worldPos += toTarget
     
-    //BaseCharacter :: tick(deltaTime);    
+    BaseCharacter :: tick(deltaTime); 
+
+    if (CheckCollisionRecs(get_collision_rec(),target->get_collision_rec()))
+    {
+        target->TakeDamage(damagePerSec * deltaTime);
+    } 
 
 
 }
